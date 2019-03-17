@@ -1,0 +1,32 @@
+{
+    "access": {
+        "administrator": [
+            {
+                "firstname": "Анна",
+                "lastname": "Логинова",
+                "login": "Esclide",
+                "middlename": "Алексеевна",
+                "password": "356a192b7913b04c54574d18c28d46e6395428ab",
+                "phone": "89213930097"
+            }
+        ],
+        "manager": [
+            {
+                "firstname": "Дмитрий",
+                "lastname": "Бусев",
+                "login": "Snaiers",
+                "middlename": "Сергеевич",
+                "password": "077c56363cd43b51e2153cafbc5a1c6063a37d85",
+                "phone": "892131422141"
+            },
+            {
+                "firstname": "Константин",
+                "lastname": "Касаев",
+                "login": "Qworty",
+                "middlename": "Викторович",
+                "password": "03f80d9a7264e55197d7979d4244ab47728861b2",
+                "phone": "894124436745"
+            }
+        ]
+    }
+}

@@ -1,0 +1,183 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+  <html>
+    <head>
+<meta charset="UTF-8">
+      <!--Import Google Icon Font-->
+      <link href="{% static 'css/icon.css' %}" rel="stylesheet">
+      <!--Import materialize.css-->
+	<link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+	  <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+
+
+  <nav class="nav-extended ">
+    <div class="nav-wrapper light-blue darken-4">
+      <a href="#" class="brand-logo right">time<b class="light-blue-text lighten-2">TABLE</b></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href={% url 'start' %} class="white-text">Главная</a></li>
+          <li><a href={% url 'setsub' %}>Добавить занятие</a></li>
+          <li><a href={% url 'delsub' %}>Удалить занятие</a></li>
+		<li><a href={% url 'options' %} class="modal-trigger white-text">Настройки</a></li>
+		<li><a href={% url 'timetable' %} class="waves-effect waves-light btn light-blue lighten-2" >Просмотр расписания</a></li>
+      </ul>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href={% url 'options' %}>Информация о пользователе</a></li>
+        <li class="tab"><a  href={% url 'change' %}>Смена пароля</a></li>
+          <li class="tab"><a class="active" href={% url 'users_view' %}>Просмотр пользователей</a></li>
+        <!--<<li class="tab"><a href={% url 'university_view' %}>Просмотр университетов</a></li>-->
+      </ul>
+    </div>
+  </nav>
+
+
+
+<footer class="page-footer light-blue lighten-2">
+<div class="row">
+    <div class=" light-blue lighten-2 white-text"> <div class="container"><h5 align="center">Просмотр пользователей системы</h5><br>
+     <div class="collection">
+         <a class="collection-item"> <b>Уровень доступа: администратор</b></a>
+         {% for i in listUsers.0 %}
+         {% if i.login == login %}
+             <a class="collection-item active light-blue darken-4">Имя пользователя: {{ i.lastname }} {{ i.firstname }} {{ i.middlename }}<br>
+             Логин: {{ i.login }}<br>
+             Номер телефона: {{ i.phone }}<br>
+
+         </a>
+         {% else %}
+        <a  class="collection-item"> Имя пользователя: {{ i.lastname }} {{ i.firstname }} {{ i.middlename }}<br>
+            Логин: {{ i.login }}<br>
+             Номер телефона: {{ i.phone }}<br>
+</a>
+         {% endif %}
+     {% endfor %}
+         <a  class="collection-item"><b> Уровень доступа: менеджер</b></a>
+     {% for i in listUsers.1 %}
+
+        <a class="collection-item"> Имя пользователя: {{ i.lastname }} {{ i.firstname }} {{ i.middlename }}<br>
+            Логин: {{ i.login }}<br>
+             Номер телефона: {{ i.phone }}<br>
+</a>
+     {% endfor %}
+
+      </div>
+
+
+
+
+ <div class=" light-blue lighten-2 white-text"> <div>
+<div class="col s6">
+
+    <div class="container"><h5 align="center">Добавление нового пользователя</h5>
+<form action="" method="get">
+    {% csrf_token %}
+    {% if check1 == 0 %}
+    <p><b><i class="tiny material-icons ">do_not_disturb_alt</i>Ошибка - текущий логин уже занят</b></p>
+        {% elif check1 == 3 %}
+    <p><b><i class="tiny material-icons ">do_not_disturb_alt</i>Ошибка - неверно введен пароль</b></p>
+        {%  elif check1 == 1 %}
+        <p><b><i class="tiny material-icons ">check</i>Пользователь успешно добавлен</b></p>
+    {%  endif %}
+
+    <p>Выберите уровень доступа пользователя</p>
+    <select name="access" class="browser-default">
+        <option value="administrator">администратор</option>
+        <option value="manager">менеджер</option>
+    </select>
+    <br>
+    <p>Введите логин пользователя</p>
+    <input required  name = "login">
+    <br>
+<p>Введите пароль пользователя</p>
+    <input required  name = "password"  type="password">
+    <br>
+    <p>Введите телефонный номер пользователя</p>
+    <input required  name = "phone" >
+    <br>
+    <p>Введите фамилию пользователя</p>
+    <input required  name = "lastname" >
+    <br>
+    <p>Введите имя пользователя</p>
+    <input required  name = "firstname" >
+    <br>
+    <p>Введите отчество пользователя</p>
+    <input required  name = "middlename" >
+    <br>
+    <p>Введите ваш пароль для подтверждения действия</p>
+    <input required name = "ad_password"  type="password">
+    <br>
+    <h6 align="center"><button  class="btn waves-effect waves-light light-blue darken-4" type="submit" name="add">Добавить
+    <i class="tiny material-icons right">send</i>
+  </button></h6>
+</form>
+    </div>
+
+
+
+</div>
+     <div class="col s6">
+            <div class="container"><h5 align="center">Удаление пользователя</h5>
+<form action="" method="get">
+    {% csrf_token %}
+{% if check2 == 5 %}
+    <p><b><i class="tiny material-icons ">do_not_disturb_alt</i>Ошибка - вы не можете удалить текущий аккаунт</b></p>
+    {% elif check2 == 0 %}
+    <p><b><i class="tiny material-icons ">do_not_disturb_alt</i>Ошибка - пользователя с данным логином не существует</b></p>
+        {% elif check2 == 3 %}
+    <p><b><i class="tiny material-icons ">do_not_disturb_alt</i>Ошибка - неверно введен пароль</b></p>
+        {%  elif check2 == 1 %}
+        <p><b><i class="tiny material-icons ">check</i>Пользователь успешно удален</b></p>
+    {%  endif %}
+
+    <p>Выберите уровень доступа пользователя</p>
+    <select name="access_del" class="browser-default">
+        <option value="administrator">администратор</option>
+        <option value="manager">менеджер</option>
+    </select>
+    <br>
+    <p>Введите логин пользователя</p>
+    <input required  name = "login_del">
+    <br>
+    <p>Введите ваш пароль для подтверждения действия</p>
+    <input required  name = "del_password"  type="password">
+    <br>
+    <h6 align="center"><button  class="btn waves-effect waves-light light-blue darken-4" type="submit" name="delete">Удалить
+    <i class="tiny material-icons right">delete</i>
+  </button></h6>
+</form>
+    </div>
+
+        </div>
+ </div></div>
+    </div>
+
+
+   </div></div>
+
+
+
+<div class="footer-copyright ">
+            <div class="container ">
+            2018 ITMO Univercity
+                <a class="grey-text text-lighten-4 right" href="{% url 'enter' %}">Выход</a>
+            </div>
+</div>
+ </footer>
+
+      <!--JavaScript at end of body for optimized loading-->
+	<script type="text/javascript" src="https://code.jquery.com/jcuery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+	<script>
+
+	</script>
+      </body>
+  </html>

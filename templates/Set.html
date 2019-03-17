@@ -1,0 +1,101 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+  <html>
+    <head>
+<meta charset="UTF-8">
+      <!--Import Google Icon Font-->
+      <link href="{% static 'css/icon.css' %}" rel="stylesheet">
+      <!--Import materialize.css-->
+	<link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+	  <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+
+
+  <nav class="nav-extended ">
+    <div class="nav-wrapper light-blue darken-4">
+      <a href="#" class="brand-logo right">time<b class="light-blue-text lighten-2">TABLE</b></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href={% url 'start' %} class="white-text">Главная</a></li>
+          <li><a href={% url 'setsub' %}>Добавить занятие</a></li>
+          <li><a href={% url 'delsub' %}>Удалить занятие</a></li>
+		<li><a href={% url 'options' %} class="modal-trigger white-text">Настройки</a></li>
+		<li><a href={% url 'timetable' %} class="waves-effect waves-light btn light-blue lighten-2" >Просмотр расписания</a></li>
+      </ul>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href={% url 'options' %}>Информация о пользователе</a></li>
+        <li class="tab"><a class="active" href={% url 'change' %}>Смена пароля</a></li>
+          {% if ky == 1 %}
+          <li class="tab"><a href={% url 'users_view' %}>Просмотр пользователей</a></li>
+        <!--<li class="tab"><a href={% url 'university_view' %}>Просмотр университетов</a></li>-->
+          {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+
+
+<footer class="page-footer light-blue lighten-2">
+<div class="row">
+    <div class=" light-blue lighten-2 white-text"> <div class="container"><h5 align="center">Изменение пароля пользователя <b>{{ login }}</b></h5>
+<div class="col s12">
+<form action="" method="post">
+    {% csrf_token %}
+    {% if k == 3 %}
+        <p><b><i class="tiny material-icons ">do_not_disturb_alt</i>Пароли не совпадают!</b></p>
+        {%  elif k == 0 %}
+        <p><b><i class="tiny material-icons ">do_not_disturb_alt</i>Неправильный пароль!</b></p>
+        {%  elif k == 1 %}
+        <p><b><i class="tiny material-icons ">check</i>Пароль успешно изменен</b></p>
+    {% endif %}
+    <p>Введите старый пароль</p>
+    <input required  name = "old" type="password">
+    <br>
+    <p>Введите новый пароль</p>
+    <input required  name = "new"  type="password">
+    <br>
+<p>Повторите новый пароль</p>
+    <input required  name = "repeat"  type="password">
+    <br>
+    <h6 align="center"><button  class="btn waves-effect waves-light light-blue darken-4" type="submit" name="action">Подтвердить
+    <i class="tiny material-icons right">check</i>
+  </button></h6>
+</form>
+
+        </div>
+
+
+
+   </div></div>
+    </div>
+
+<div class="footer-copyright ">
+            <div class="container ">
+            2018 ITMO Univercity
+                <a class="grey-text text-lighten-4 right" href="{% url 'enter' %}">Выход</a>
+            </div>
+</div>
+ </footer>
+
+      <!--JavaScript at end of body for optimized loading-->
+	<script type="text/javascript" src="https://code.jquery.com/jcuery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+	<script>
+
+	</script>
+      </body>
+  </html>
+
+
+
+
+
+

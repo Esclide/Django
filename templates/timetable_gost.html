@@ -1,0 +1,1071 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+  <html>
+    <head>
+<meta charset="UTF-8">
+      <!--Import Google Icon Font-->
+      <link href="{% static 'css/icon.css' %}" rel="stylesheet">
+      <!--Import materialize.css-->
+	<link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+	  <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+
+<nav>
+    <div class="nav-wrapper light-blue darken-4">
+      <a href="#" class="brand-logo right">time<b class="light-blue-text lighten-2">TABLE</b></a>
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href={% url 'enter_gost' %} class="white-text">Расписание по группам</a></li>
+          <li><a href={% url 'enter_gost_teach' %}>Расписание по преподавателям</a></li>
+          <li><a href={% url 'enter_gost_auds' %}>Расписание по аудиториям</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<footer class="page-footer light-blue lighten-2">
+<div class="row">
+    <div class=" light-blue lighten-2 white-text col s5"> <div class="container"><h4 align="center">Выберите группу для просмотра раписания</h4>
+<form action="" method="get">
+    {% csrf_token %}
+        <h6 align="center">
+        <p>Номер группы</p>
+        <select name="group_num" class="browser-default">
+    {% for i in file.courses%}
+        <optgroup label={{ i }}>
+        {% for j in file.data%}
+            {% if j.course == i %}
+            <option value={{ j.group }}>{{ j.group }}</option>
+            {% endif %}
+        {% endfor %}
+        </optgroup>
+    {% endfor %}
+    </select>
+
+         <p>Номер семестра</p>
+        <select name="sem" class="browser-default">
+    {% for i in file.sem %}
+            <option value={{ i }}>{{ i }}</option>
+    {% endfor %}
+    </select>
+
+        <br>
+    <button class="btn waves-effect waves-light light-blue darken-4" type="submit" name="action">Подтвердить
+    <i class="tiny material-icons right">check</i>
+  </button>
+        </h6>
+</form>
+
+
+    </div></div>
+    <div class="col s7">{% if k == 1  %}<h4 align="center">Раписание для группы {{ group }} <br>на {{ sem }} семестр<br></h4>
+        <div class="container">
+        <div class="col s6">
+        <h5 align="center">Четная неделя <br></h5>
+{% if file.len_1_ch != 0 %}
+    <h6><b>Понедельник</b></h6>
+{% for i in file.monday%}
+    {% if i.chet == "четная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+        Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% endif %}
+{% endfor %}
+{% endif %}
+
+{% if file.len_2_ch != 0 %}
+<h6><b>Вторник</b></h6>
+{% for i in file.tuesday%}
+     {% if i.chet == "четная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% endif %}
+{% endfor %}
+{% endif %}
+{% if file.len_3_ch != 0 %}
+<h6><b>Среда</b></h6>
+{% for i in file.wednesday%}
+     {% if i.chet == "четная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% endif %}
+{% endfor %}
+{% endif %}
+{% if file.len_4_ch != 0 %}
+<h6><b>Четверг</b></h6>
+{% for i in file.thursday%}
+     {% if i.chet == "четная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% endif %}
+{% endfor %}
+{% endif %}
+{% if file.len_5_ch != 0 %}
+<h6><b>Пятница</b></h6>
+{% for i in file.friday%}
+     {% if i.chet == "четная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% endif %}
+{% endfor %}
+{% endif %}
+{% if file.len_6_ch != 0 %}
+<h6><b>Суббота</b></h6>
+{% for i in file.saturday%}
+     {% if i.chet == "четная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% endif %}
+{% endfor %}
+{% endif %}
+    {%  elif k == 0 %}
+    В данной группе еще нет занятий
+{%  endif %}
+
+
+
+
+</div>
+
+
+
+
+{% if k == 1  %}
+    <div class="col s6">
+    <h5 align="center">Нечетная неделя <br></h5>
+{% if file.len_1_nch != 0 %}
+    <h6><b>Понедельник</b></h6>
+{% for i in file.monday%}
+    {% if i.chet == "нечетная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       <h7><b>Неделя {{ i.chet }} <br></b></h7>
+        Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}{% endif %}
+{% endfor %}
+{% endif %}
+{% if file.len_2_nch != 0 %}
+<h6><b>Вторник</b></h6>
+{% for i in file.tuesday%}
+     {% if i.chet == "нечетная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}{% endif %}
+{% endfor %}
+{% endif %}
+{% if file.len_3_nch != 0 %}
+<h6><b>Среда</b></h6>
+{% for i in file.wednesday%}
+     {% if i.chet == "нечетная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}{% endif %}
+{% endfor %}
+{% endif %}
+{% if file.len_4_nch != 0 %}
+<h6><b>Четверг</b></h6>
+{% for i in file.thursday%}
+     {% if i.chet == "нечетная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}{% endif %}
+{% endfor %}
+{% endif %}
+{% if file.len_5_nch != 0 %}
+<h6><b>Пятница</b></h6>
+{% for i in file.friday%}
+     {% if i.chet == "нечетная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}{% endif %}
+{% endfor %}
+{% endif %}
+{% if file.len_6_nch != 0 %}
+<h6><b>Суббота</b></h6>
+{% for i in file.saturday%}
+     {% if i.chet == "нечетная" %}
+    {% if i.time == "8:20 - 9:50" %}
+       Время: 8:20 - 9:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+        {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "10:00 - 11:30" %}
+       Время: 10:00 - 11:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "11:40 - 13:10" %}
+       Время: 11:40 - 13:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "13:30 - 15:00" %}
+       Время: 13:30 - 15:00<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "15:20 - 16:50" %}
+       Время: 15:20 - 16:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "17:00 - 18:30" %}
+       Время: 17:00 - 18:30<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "18:40 - 20:10" %}
+       Время: 18:40 - 20:10<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}
+    {% if i.time == "20:20 - 21:50" %}
+       Время: 20:20 - 21:50<br>
+        Предмет: {{ i.info.subject.name }} (тип:{{ i.info.subject.type }})<br>
+        Аудитория: кабинет {{ i.info.cabinet}}, адрес: {{ i.info.adress }}<br>
+        Преподаватель: {{ i.info.teacher.lastname}} {{ i.info.teacher.firstname}} {{ i.info.teacher.middlename}}<br>
+    {% if i.note != "" %}
+        Информация: {{ i.note }}<br>
+        {% endif %}<br>
+    {% endif %}{% endif %}
+{% endfor %}
+{% endif %}
+    {%  elif k == 0 %}
+    В данной группе еще нет занятий
+{%  endif %}
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+    </div>
+    </div>
+
+<div class="footer-copyright ">
+
+            <div class="container ">
+            2018 ITMO Univercity
+                <a class="grey-text text-lighten-4 right" href="{% url 'enter' %}">Выход</a>
+            </div>
+</div>
+ </footer>
+
+
+
+
+
+
+
+      <!--JavaScript at end of body for optimized loading-->
+	<script type="text/javascript" src="https://code.jquery.com/jcuery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+	<script>
+
+	</script>
+      </body>
+  </html>
+
+
+
+
