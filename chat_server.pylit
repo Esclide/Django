@@ -1,0 +1,204 @@
+@code_type python .py
+@comment_type # %s
+@compiler lit -t chat_server.lit && pyflakes chat_server.py
+
+@title python chat server
+@author Anna Loginova
+@date 2020-02-02
+@description
+
+@s Introduction
+
+It is a server class for the chat application based on python sockets.
+Make free port 9103 to run this application
+
+The structure of this server class will look like this:
+
+-- chat_server.pylit
+    import socket
+    from _thread import start_new_thread
+
+    class Server:
+        @{Setup}
+        @{Init Server}
+        @{Start Server}
+        @{Get Nickname}
+        @{Send Help}
+        @{Accept Connections}
+        @{Broadcast}
+        @{Send UserList}
+        @{Change Nickname}
+        @{Delete Connection}
+
+    if __name__ == '__main__':
+        @{Main}
+
+--
+
+@s The Setup
+
+In the class Server we have default variables:
+1. clientsDict, where we store collection of the clients addresses and connections to them
+2. nicknameDict, where we store collection of the clients addresses and their nicknames
+3. SIZE - size of the message read from the client socket
+4. ENC - necessary encryption of the messages
+
+    clientsDict = {}
+    nicknamesDict = {}
+    SIZE = 1024
+    ENC = "UTF-8"
+
+--
+
+@s Init Server
+
+Fucntion which be automatically called when the class is created.
+We get host address and port from the user and put it in the Servпо адресуer's variable.
+Then we create a new TCP socket and make it working at the entered address
+
+    def __init__(self, host, port):
+        self.host = host
+        self.port = port
+        self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.serverSocket.bind((host, port))
+
+
+--
+
+@Start Server
+
+Function which start the server and sceck if where will be new incoming connection.
+In this case we get the connection and address from the clend and put it in the dictionary.
+Then we call function to get nickname.
+For the each client we start new threat.
+If user exit from the chat, we close connection. If he exit by the stop program - we print error message/
+
+    def startServer(self, maxConnections):
+        try:
+            self.serverSocket.listen(maxConnections)
+            print('Server is running, please, press ctrl+c to stop')
+            print('Waiting for connections...')
+            while True:
+                connection, address = self.serverSocket.accept()
+                print("{}:{} was connected.".format(address, address))
+                @{GetNickname(connection)}
+                self.clientsDict[connection] = address
+                start_new_thread( @{AcceptConnections}, (connection,))
+            connection.close()
+        except KeyboardInterrupt:
+            print("\nThe server was stopped")
+
+--
+
+@GetNickname
+
+Function which discover the user's nickname and put it to the dictionary
+Then we send to user the welcome message and send to other users in the chat about new client
+
+    def getNickname(self, connection):
+        connection.send(bytes('Please enter your nickname', self.ENC))
+        nickname = connection.recv(self.SIZE).decode(self.ENC)
+        self.nicknamesDict[connection] = nickname
+        message = 'Welcome to server, ' + str(nickname) + '!\nType -help to see chat commands'
+        @{Broadcast('[SYSTEM]', bytes('{} was connected to chat'.format(nickname), self.ENC)}
+        connection.send(bytes(message, self.ENC))
+
+--
+
+@SendHelp
+
+Function which send reference Information to user
+
+    def sendHelp(self, connection):
+        help_message = '-chname - change nickname\n' \
+                       '-userlist - show list of users in room ' \
+                       '-quit - exit from the chat'
+        connection.send(bytes(help_message, self.ENC))
+
+--
+
+@AcceptConnections
+
+Function which in the endless cycle get messages from the user, check this message and run necessary function
+If user entered the service commend, we call the service function.
+Otherwise we send the user's message to other users
+
+    def acceptConnections(self, connection):
+        while True:
+            message = connection.recv(self.SIZE)
+            if not message:
+                break
+            if message == bytes("-quit", self.ENC):
+                address = self.clientsDict[connection]
+                print("{}:{} was disconnected.".format(address, address))
+                self.broadcast('[SYSTEM]',
+                               bytes('{} was disconnected from chat'.format(self.nicknamesDict[connection]), self.ENC))
+                @{Delete Connection(connection)}
+            if message == bytes("-help", self.ENC):
+                @{sendHelp(connection)}
+            if message == bytes("-chname", self.ENC):
+                @{changeNickname(connection)}
+            if message == bytes("-userlist", self.ENC):
+                @{sendUserlist(connection)}
+            else:
+                try:
+                    @{broadcast(self.nicknamesDict[connection], message)}
+                except Exception:
+                    pass
+
+--
+
+@Broadcast
+
+Function which send message to all users in the chat
+
+    def broadcast(self, nickname, message):
+        for clientSocket in self.clientsDict.keys():
+            clientSocket.send(bytes('{}:{}'.format(nickname, message.decode(self.ENC)), self.ENC))
+
+--
+
+@SendUserList
+
+Function which send to user the list of all clients of chat from the dictionary variable
+
+    def sendUserlist(self, connection):
+        connection.send(bytes('{0:>10}     {1:10}'.format("address", "nickname"), self.ENC))
+        for client in self.nicknamesDict:
+            connection.send(
+                bytes("{0:10} ==> {1:10}\n".format(self.clientsDict[client][1], self.nicknamesDict[client]), self.ENC))
+
+--
+
+@ChangeNickname
+
+Function which re-requests the user's nickname and change the record in dictionary
+Then function send a message to user with his new nickname
+
+    def changeNickname(self, connection):
+        connection.send(bytes('Please enter your nickname', self.ENC))
+        nickname = connection.recv(self.SIZE).decode(self.ENC)
+        self.nicknamesDict[connection] = nickname
+        connection.send(bytes('Your nickname now is {} \n'.format(nickname), self.ENC))
+
+--
+
+@Delete Connection
+
+Function which removes user from both dictionaries
+
+    def delConnection(self, connection):
+        self.clientsDict.pop(connection)
+        self.nicknamesDict.pop(connection)
+
+--
+
+@Main
+
+The main function which start Server class if the code was run directly
+
+if __name__ == '__main__':
+    server = Server('127.0.0.1', 9103)
+    server.startServer(10)
+
+--
